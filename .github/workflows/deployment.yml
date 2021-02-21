@@ -37,7 +37,7 @@ jobs:
       with:
         context: .
         push: true
-        tags: ${{ secrets.DOCKERHUB_USERNAME }}/demo-app:${{steps.vars.outputs.tag}}
+        tags: shivakiran/demo-app:${{steps.vars.outputs.tag}}
 
 
     - name: Configure AWS Credentials
