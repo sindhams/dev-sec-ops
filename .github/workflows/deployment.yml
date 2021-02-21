@@ -53,5 +53,5 @@ jobs:
         kubectl apply -f ns.yaml
         kubectl apply -f demoapp-svc.yaml -n demoapp
         kubectl apply -f demoapp-deployment.yaml -n demoapp
-        kubectl set image deployment/${DEPLOYMENT_NAME} demoapp=image:${{steps.vars.outputs.tag}} -n demoapp
+        kubectl set image deployment/${DEPLOYMENT_NAME} demoapp=shivakiran/demo-app:${{steps.vars.outputs.tag}} -n demoapp
         kubectl rollout status deployment/${DEPLOYMENT_NAME} -n demoapp
