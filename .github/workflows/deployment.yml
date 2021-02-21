@@ -24,7 +24,8 @@ jobs:
 
     - name: Get the version
       id: vars
-      run: echo ::set-output name=tag::$(echo ${git rev-parse --short HEAD})
+      run: |
+           echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
 
     - name: Login to DockerHub
       uses: docker/login-action@v1
@@ -33,10 +34,10 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
     - name: Build the tagged Docker image
-      run: docker build . --file Dockerfile --tag shivakiran/demo-app:${{steps.vars.outputs.tag}}
+      run: docker build . --file Dockerfile --tag shivakiran/demo-app:${{steps.vars.outputs.sha_short}}
 
     - name: Push the tagged Docker image
-      run: docker push shivakiran/demo-app:${{steps.vars.outputs.tag}}
+      run: docker push shivakiran/demo-app:${{steps.vars.outputs.sha_short}}
 
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1
