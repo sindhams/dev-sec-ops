@@ -8,6 +8,9 @@ spec:
     metadata:
       labels:
         app: demo-app
+  selector:
+    matchLabels:
+      app: demo-app
     spec:
       containers:
       - name: demoapp
