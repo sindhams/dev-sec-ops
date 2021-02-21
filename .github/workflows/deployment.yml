@@ -1,0 +1,39 @@
+name: "deployment"
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+    - 'terraform/**'
+
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+  CLUSTER_NAME: demo-eks-cluster
+  DEPLOYMENT_NAME: demo-app
+
+jobs:
+  kubernetes-deploy:
+    name: Deploy Kubernetes manifests to EKS
+    runs-on: ubuntu-18.04
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }}
+
+    - name: Apply Kubernetes manifests
+      working-directory: ./k8s/
+      run: |
+        aws eks update-kubeconfig --name ${CLUSTER_NAME}
+        kubectl apply -f ns.yaml
+        kubectl apply -f demoapp-svc.yaml -n demo-app
+        kubectl apply -f demoapp-deployment.yaml -n demo-app
+        kubectl rollout status deployment/${DEPLOYMENT_NAME} -n demo-app
