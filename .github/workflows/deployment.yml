@@ -32,13 +32,11 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-    - name: Build and push
-      uses: docker/build-push-action@v2
-      with:
-        context: .
-        push: true
-        tags: shivakiran/demo-app:${{steps.vars.outputs.tag}}
+    - name: Build the tagged Docker image
+      run: docker build . --file Dockerfile --tag shivakiran/demo-app:${{steps.vars.outputs.tag}}
 
+    - name: Push the tagged Docker image
+      run: docker push shivakiran/demo-app:${{steps.vars.outputs.tag}}
 
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1
