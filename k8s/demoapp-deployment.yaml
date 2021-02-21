@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: demoapp
-        image: shivakiran/demo-app:1.0
+        image: shivakiran/demo-app:image_tag
         ports:
         - containerPort: 3000
