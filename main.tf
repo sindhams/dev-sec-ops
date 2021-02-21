@@ -32,7 +32,7 @@ locals {
 }
 
 module "vpc" {
-  source = "git::ssh://git@github.com/reactiveops/terraform-vpc.git?ref=v5.0.1"
+  source = "git::https://github.com/reactiveops/terraform-vpc.git?ref=v5.0.1"
 
   aws_region = "us-east-1"
   az_count   = 3
